@@ -1,7 +1,13 @@
-const { getToken, getAccount } = require('../services/mt5Service');
+const { getToken, getAccount, sendOrder } = require('../services/mt5Service');
 
 exports.sendSignal = async(req,res)=>{
-    const { name, email } = req.body;
-    
-    res.status(200).json({msg:`Account detials ${await getAccount(await getToken(185920045,'Durva@2281','Exness-MT5Real26'))}`});
+    const { Symbol, Signal, Volume, user, password, server } = req.body;
+    const id = await getToken(user, password, server);
+    try{
+        res.status(200).json({msg:`Account detials ${
+            await sendOrder(id, Symbol, Signal, Volume)}`});
+    }
+    catch(error){
+        throw error.response ? error.response.data : error;
+    }
 };
