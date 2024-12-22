@@ -56,8 +56,10 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
                 }
             });
         }
+        if (orders.data != null && orders.data.find(x=>x.symbol === params.Symbol).length == 0) {
         const response = await axios.get(endpoint, { params });
         return JSON.stringify(response.data);
+        }
     } catch (error) {
         console.error('Error getting sendorder to MT5:', error.message);
         return error;
