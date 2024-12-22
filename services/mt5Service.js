@@ -1,4 +1,5 @@
 const axios = require('axios');
+const res = require('express/lib/response');
 
 const MT5_API_URL = 'https://mt5.mtapi.io';
 
@@ -38,7 +39,7 @@ const getAccount = async (id) => {
 
 const sendOrder = async (id, Symbol, operation, Volume) => {
 
-    const endpoint = `${MT5_API_URL}/OrderSend`;
+    
     const openOperdersendpoint = `${MT5_API_URL}/OpenOrders`;
 
     const params = {
@@ -52,16 +53,11 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
         if (orders.data != null && orders.data.length > 0) {
             orders.data.forEach(async order => {
                 if (order.symbol === params.Symbol && order.orderType != params.operation) {
-                    await axios.get(`https://mt5.mtapi.io/OrderClose?id=${id}&ticket=${order.ticket}`);
+                   await closeOrder(id, order.ticket);
                 }
             });
         }
-        setTimeout(async () => {
-            if (orders.data != null && orders.data.filter(x => x.symbol === params.Symbol).length == 0) {
-                const response = await axios.get(endpoint, { params });
-                return JSON.stringify(response.data);
-            }
-        }, 9000);
+        await openOrder(id, Symbol, operation, Volume);
     } catch (error) {
         console.error('Error getting sendorder to MT5:', error.message);
         return error;
@@ -79,6 +75,28 @@ const closeOrder = async (id, ticket) => {
     try {
         const response = await axios.get(endpoint, { params });
         return JSON.stringify(response.data);
+    } catch (error) {
+        console.error('Error getting close Order to MT5:', error.message);
+        return error;
+    }
+}
+
+const openOrder = async (id, Symbol, operation, Volume) => {
+
+    const endpoint = `${MT5_API_URL}/OrderSend`;
+
+    const params = {
+        id,
+        Symbol,
+        operation,
+        Volume
+    };
+    try {
+        const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
+        if (orders.data != null && orders.data.filter(x=>x.order.symbol === params.Symbol && order.orderType === params.operation).length == 0) {
+            const response = axios.get(endpoint, {params});
+            return response;
+        }
     } catch (error) {
         console.error('Error getting close Order to MT5:', error.message);
         return error;
