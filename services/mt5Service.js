@@ -49,19 +49,23 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
     };
     try {
         const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
-        if (orders.data != null && orders.data.length) {
+        if (orders.data != null && orders.data.length > 0) {
             orders.data.forEach(async order => {
                 if (order.symbol === params.Symbol && order.orderType != params.operation) {
                     await axios.get(`https://mt5.mtapi.io/OrderClose?id=${id}&ticket=${order.ticket}`);
                 }
             });
         }
-        setTimeout(async () => {
-        if (orders.data != null && orders.data.filter(x=>x.symbol === params.Symbol).length == 0) {
-        const response = await axios.get(endpoint, { params });
-        return JSON.stringify(response.data);
+        else {
+            const response = await axios.get(endpoint, { params });
+            return JSON.stringify(response.data);
         }
-    }, 2000);
+        setTimeout(async () => {
+            if (orders.data != null && orders.data.filter(x => x.symbol === params.Symbol).length == 0) {
+                const response = await axios.get(endpoint, { params });
+                return JSON.stringify(response.data);
+            }
+        }, 6000);
     } catch (error) {
         console.error('Error getting sendorder to MT5:', error.message);
         return error;
