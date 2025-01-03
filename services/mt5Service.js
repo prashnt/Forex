@@ -42,7 +42,7 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
     
     const openOperdersendpoint = `${MT5_API_URL}/OpenOrders`;
 
-    
+    console.log(id,Symbol,operation,Volume);
     try {
         const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
         if (orders.data != null && orders.data.length > 0) {
@@ -62,7 +62,7 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
 const closeOrder = async (id, ticket) => {
 
     const endpoint = `${MT5_API_URL}/OrderClose`;
-
+    console.log(id,ticket);
     const params = {
         id,
         ticket
