@@ -9,7 +9,6 @@ const short_routes = require("./routes/shortRoutes");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use("/api", forex_routes);
-app.use("/api", short_routes);
 
 const start = async () => {
     try{
