@@ -41,7 +41,7 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
     const openOperdersendpoint = `${MT5_API_URL}/OpenOrders`;
 
     console.log(id,Symbol,operation,Volume);
-    var orderHistory = getOrderHistory(id);
+    
     try {
         const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
         if (orders.data != null && orders.data.length > 0) {
@@ -52,8 +52,9 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
                 }
             });
         }
-        let profit = orderHistory.filter((x) => x.symbol === Symbol) // Filter employees by department
-        .reduce((totalProfit, x) => totalProfit + x.profit, 0);
+        
+        let profit = await getProfit(id,Symbol);
+        console.log(profit);
         if(profit < 1500){
             await openOrder(id, Symbol, operation, Volume);
         }
@@ -62,7 +63,21 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
         return error;
     }
 }
-
+const getProfit = async (id,Symbol)=>{
+    const orderHistory = JSON.parse(await getOrderHistory(id));
+    if (Array.isArray(orderHistory.orders)) {
+        // Proceed with iteration
+      } else {
+        console.error('The orders property is not an array.');
+      }
+    let profit = 0;
+        orderHistory.orders.forEach((x) => {
+            if(x.symbol === Symbol){
+                profit += x.profit;
+            }
+        });
+        return profit;
+}
 const closeOrder = async (id, ticket) => {
 
     const endpoint = `${MT5_API_URL}/OrderClose`;
