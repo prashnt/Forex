@@ -20,7 +20,7 @@ const getToken = async (user, password, server) => {
 };
 const getOrderHistory = async (id) => {
 
-    const endpoint = `${MT5_API_URL}//OrderHistory`;
+    const endpoint = `${MT5_API_URL}/OrderHistory`;
     const currentDate = new Date();
     const params = {
         id,
