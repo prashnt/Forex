@@ -53,13 +53,49 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
                 }
             });
         }
+        let profit = await getProfit(id,Symbol);
+        console.log(profit);
+        if(profit < 15000){
         await openOrder(id, Symbol, operation, Volume);
+        }
     } catch (error) {
         console.error('Error getting sendorder to MT5:', error.message);
         return error;
     }
 }
 
+const getOrderHistory = async (id) => {
+
+    const endpoint = `${MT5_API_URL}/OrderHistory`;
+    const currentDate = new Date();
+    const params = {
+        id,
+        from:currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDate(),
+        to:currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+(currentDate.getDate()+1)
+    };
+    try {
+        const response = await axios.get(endpoint, { params });
+        return JSON.stringify(response.data);
+    } catch (error) {
+        console.error('Error getting Account to MT5:', error.message);
+        throw error.response ? error.response.data : error;
+    }
+}
+const getProfit = async (id,Symbol)=>{
+    const orderHistory = JSON.parse(await getOrderHistory(id));
+    if (Array.isArray(orderHistory.orders)) {
+        // Proceed with iteration
+      } else {
+        console.error('The orders property is not an array.');
+      }
+    let profit = 0;
+        orderHistory.orders.forEach((x) => {
+            if(x.symbol === Symbol){
+                profit += x.profit;
+            }
+        });
+        return profit;
+}
 const closeOrder = async (id, ticket) => {
 
     const endpoint = `${MT5_API_URL}/OrderClose`;
