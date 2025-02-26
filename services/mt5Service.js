@@ -89,7 +89,7 @@ const getProfit = async (id,Symbol)=>{
         console.error('The orders property is not an array.');
       }
     let profit = 0;
-        if(orderHistory.orders.length > 0){
+        if(orderHistory.orders != undefined || orderHistory.orders.length > 0){
             orderHistory.orders.forEach((x) => {
                 if(x.symbol === Symbol){
                     profit += x.profit;
