@@ -89,11 +89,16 @@ const getProfit = async (id,Symbol)=>{
         console.error('The orders property is not an array.');
       }
     let profit = 0;
-        orderHistory.orders.forEach((x) => {
-            if(x.symbol === Symbol){
-                profit += x.profit;
-            }
-        });
+        if(orderHistory.orders.length > 0){
+            orderHistory.orders.forEach((x) => {
+                if(x.symbol === Symbol){
+                    profit += x.profit;
+                }
+            });
+        }
+        else {
+            profit = 0;
+        }
         return profit;
 }
 const closeOrder = async (id, ticket) => {
