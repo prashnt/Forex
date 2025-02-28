@@ -68,11 +68,11 @@ const getOrderHistory = async (id) => {
 
     const endpoint = `${MT5_API_URL}/OrderHistory`;
     const currentDate = new Date();
-    console.log(addDays(currentDate, 1).setHours(0, 0, 0, 0));
+    console.log(new Date(addDays(currentDate, 1).setHours(0, 0, 0, 0)));
     const params = {
         id,
-        from:currentDate.setHours(0, 0, 0, 0),
-        to:addDays(currentDate, 1).setHours(0, 0, 0, 0)
+        from:new Date(currentDate.setHours(0, 0, 0, 0)),
+        to:new Date(addDays(currentDate, 1).setHours(0, 0, 0, 0))
     };
     try {
         const response = await axios.get(endpoint, { params });
