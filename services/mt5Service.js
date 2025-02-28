@@ -71,7 +71,7 @@ const getOrderHistory = async (id) => {
     const params = {
         id,
         from:currentDate,
-        to:currentDate.addDays(currentDate, 1)
+        to:addDays(currentDate, 1)
     };
     try {
         const response = await axios.get(endpoint, { params });
