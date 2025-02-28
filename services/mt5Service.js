@@ -70,8 +70,8 @@ const getOrderHistory = async (id) => {
     const currentDate = new Date();
     const params = {
         id,
-        from:currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDate(),
-        to:currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+(currentDate.getDate()+1)
+        from:currentDate,
+        to:currentDate.addDays(currentDate, 1)
     };
     try {
         const response = await axios.get(endpoint, { params });
@@ -88,7 +88,6 @@ const getProfit = async (id,Symbol)=>{
       } else {
         console.error('The orders property is not an array.');
       }
-      console.error(orderHistory);
     let profit = 0;
         if(orderHistory.orders != undefined || orderHistory.orders.length > 0){
             orderHistory.orders.forEach((x) => {
