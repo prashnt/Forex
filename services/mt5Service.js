@@ -68,7 +68,7 @@ const getOrderHistory = async (id) => {
 
     const endpoint = `${MT5_API_URL}/OrderHistory`;
     const currentDate = new Date();
-    console.log(addDays(currentDate, 1));
+    console.log(addDays(currentDate, 1).setHours(0, 0, 0, 0));
     const params = {
         id,
         from:currentDate.setHours(0, 0, 0, 0),
