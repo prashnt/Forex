@@ -68,6 +68,7 @@ const getOrderHistory = async (id) => {
 
     const endpoint = `${MT5_API_URL}/OrderHistory`;
     const currentDate = new Date();
+    console.log(addDays(currentDate, 1));
     const params = {
         id,
         from:currentDate,
@@ -88,7 +89,7 @@ const getProfit = async (id,Symbol)=>{
       } else {
         console.error('The orders property is not an array.');
       }
-      console.log(orderHistory);
+      console.log(JSON.stringify(orderHistory));
     let profit = 0;
         if(orderHistory.orders != undefined || orderHistory.orders.length > 0){
             orderHistory.orders.forEach((x) => {
