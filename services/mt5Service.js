@@ -89,7 +89,7 @@ const getProfit = async (id,Symbol)=>{
       } else {
         console.error('The orders property is not an array.');
       }
-      console.log(JSON.stringify(orderHistory));
+      //console.log(JSON.stringify(orderHistory));
     let profit = 0;
         if(orderHistory.orders != undefined || orderHistory.orders.length > 0){
             orderHistory.orders.forEach((x) => {
