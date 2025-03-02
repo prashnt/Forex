@@ -63,7 +63,6 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
         return error;
     }
 }
-
 const getOrderHistory = async (id) => {
 
     const endpoint = `${MT5_API_URL}/OrderHistory`;
