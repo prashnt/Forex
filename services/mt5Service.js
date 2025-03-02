@@ -1,6 +1,6 @@
 const axios = require('axios');
 const res = require('express/lib/response');
-const dateFnsTz = require('date-fns-tz');
+import { formatInTimeZone } from 'date-fns-tz'
 const MT5_API_URL = 'https://mt5.mtapi.io';
 
 
@@ -69,12 +69,12 @@ const getOrderHistory = async (id) => {
     const endpoint = `${MT5_API_URL}/OrderHistory`;
     const currentDate = new Date();
     const timeZone = 'Asia/Kolkata';
-    console.log(dateFnsTz.format(dateFnsTz.utcToZonedTime(currentDate,timeZone), "yyyy-MM-dd", { timeZone }));
-    console.log(dateFnsTz.format(dateFnsTz.utcToZonedTime(new Date(addDays(currentDate, 1)),timeZone),"yyyy-MM-dd", { timeZone }));
+    console.log(formatInTimeZone(currentDate,timeZone, "yyyy-MM-dd"));
+    console.log(formatInTimeZone(new Date(addDays(currentDate, 1)),timeZone,"yyyy-MM-dd"));
     const params = {
         id,
-        from:dateFnsTz.format(dateFnsTz.utcToZonedTime(currentDate,timeZone), "yyyy-MM-dd", { timeZone }),
-        to:dateFnsTz.format(dateFnsTz.utcToZonedTime(new Date(addDays(currentDate, 1)),timeZone),"yyyy-MM-dd", { timeZone })
+        from:formatInTimeZone(currentDate,timeZone, "yyyy-MM-dd"),
+        to:formatInTimeZone(new Date(addDays(currentDate, 1)),timeZone,"yyyy-MM-dd")
     };
     try {
         const response = await axios.get(endpoint, { params });
