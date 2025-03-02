@@ -7,6 +7,7 @@ const {
     formatInTimeZone,
     getTimezoneOffset,
   } = require('date-fns-tz');
+  const { addDays } = require('date-fns');
 const MT5_API_URL = 'https://mt5.mtapi.io';
 
 
