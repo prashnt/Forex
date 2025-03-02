@@ -68,12 +68,13 @@ const getOrderHistory = async (id) => {
 
     const endpoint = `${MT5_API_URL}/OrderHistory`;
     const currentDate = new Date();
-    console.log(currentDate);
-    console.log(new Date(addDays(currentDate, 1).setHours(0, 0, 0, 0)));
+    const timeZone = 'Asia/Kolkata';
+    console.log(format(currentDate, "yyyy-MM-dd", { timeZone }));
+    console.log(format(new Date(addDays(currentDate, 1)),"yyyy-MM-dd", { timeZone }));
     const params = {
         id,
-        from:new Date(currentDate.setHours(0, 0, 0, 0)),
-        to:new Date(addDays(currentDate, 1).setHours(0, 0, 0, 0))
+        from:format(currentDate, "yyyy-MM-dd", { timeZone }),
+        to:format(new Date(addDays(currentDate, 1)),"yyyy-MM-dd", { timeZone })
     };
     try {
         const response = await axios.get(endpoint, { params });
