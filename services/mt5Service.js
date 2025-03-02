@@ -70,7 +70,7 @@ const getOrderHistory = async (id) => {
     const currentDate = new Date();
     const timeZone = 'Asia/Kolkata';
     console.log(format(dateFnsTz.utcToZonedTime(currentDate,timeZone), "yyyy-MM-dd", { timeZone }));
-    console.log(format(utcToZonedTime(new Date(addDays(currentDate, 1)),timeZone),"yyyy-MM-dd", { timeZone }));
+    console.log(format(dateFnsTz.utcToZonedTime(new Date(addDays(currentDate, 1)),timeZone),"yyyy-MM-dd", { timeZone }));
     const params = {
         id,
         from:format(dateFnsTz.utcToZonedTime(currentDate,timeZone), "yyyy-MM-dd", { timeZone }),
