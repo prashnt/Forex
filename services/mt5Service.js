@@ -1,6 +1,12 @@
 const axios = require('axios');
 const res = require('express/lib/response');
-const formatInTimeZone = require('date-fns-tz')
+const {
+    zonedTimeToUtc,
+    utcToZonedTime,
+    // format,
+    formatInTimeZone,
+    getTimezoneOffset,
+  } = require('date-fns-tz');
 const MT5_API_URL = 'https://mt5.mtapi.io';
 
 
