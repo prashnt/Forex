@@ -75,9 +75,8 @@ const getOrderHistory = async (id) => {
 
     const endpoint = `${MT5_API_URL}/OrderHistory`;
     const currentDate = new Date();
-    const timeZone = 'Asia/Kolkata';
-    console.log(formatInTimeZone(currentDate,timeZone, "yyyy-MM-dd"));
-    console.log(formatInTimeZone(new Date(addDays(currentDate, 1)),timeZone,"yyyy-MM-dd"));
+    console.log(currentDate);
+    console.log(new Date(addDays(currentDate, 1)));
     const params = {
         id,
         from:formatInTimeZone(currentDate,timeZone, "yyyy-MM-dd"),
