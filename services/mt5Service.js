@@ -62,7 +62,7 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
         }
         let profit = await getProfit(id,Symbol);
         console.log(profit);
-        if(profit < 40000){
+        if(profit < 15000){
         await openOrder(id, Symbol, operation, Volume);
         }
     } catch (error) {
