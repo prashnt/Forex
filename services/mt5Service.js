@@ -75,8 +75,22 @@ const getOrderHistory = async (id) => {
 
     const endpoint = `${MT5_API_URL}/OrderHistory`;
     const currentDate = new Date();
-    console.log(currentDate);
-    console.log(new Date(addDays(currentDate, 1)));
+    const startOfDayUTC = new Date(Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        new Date().getUTCDate(),
+        0, 0, 0
+      ));
+      
+      const endOfDayUTC = new Date(Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        new Date().getUTCDate(),
+        23, 59, 59, 999
+      ));
+      
+      console.log('Start of the day (UTC):', startOfDayUTC.toISOString());
+      console.log('End of the day (UTC):', endOfDayUTC.toISOString());
     const params = {
         id,
         from:formatInTimeZone(currentDate,timeZone, "yyyy-MM-dd"),
