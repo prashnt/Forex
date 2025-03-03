@@ -93,8 +93,8 @@ const getOrderHistory = async (id) => {
       console.log('End of the day (UTC):', endOfDayUTC.toISOString());
     const params = {
         id,
-        from:formatInTimeZone(currentDate,timeZone, "yyyy-MM-dd"),
-        to:formatInTimeZone(new Date(addDays(currentDate, 1)),timeZone,"yyyy-MM-dd")
+        from:startOfDayUTC.toISOString(),
+        to:endOfDayUTC.toISOString()
     };
     try {
         const response = await axios.get(endpoint, { params });
