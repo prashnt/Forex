@@ -49,7 +49,6 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
     
     const openOperdersendpoint = `${MT5_API_URL}/OpenOrders`;
 
-    console.log(id,Symbol,operation,Volume);
     try {
         const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
         if (orders.data != null && orders.data.length > 0) {
@@ -60,11 +59,10 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
                 }
             });
         }
-        let profit = await getProfit(id,Symbol);
-        console.log(profit);
-        if(profit < 30000){
+        //let profit = await getProfit(id,Symbol);
+        //if(profit < 30000){
         await openOrder(id, Symbol, operation, Volume);
-        }
+        //}
         else {
             console.log("You Reached Your Goal for "+Symbol+"==>"+profit);
         }
