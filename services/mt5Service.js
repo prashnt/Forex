@@ -63,9 +63,9 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
         //if(profit < 30000){
         await openOrder(id, Symbol, operation, Volume);
         //}
-        else {
-            console.log("You Reached Your Goal for "+Symbol+"==>"+profit);
-        }
+        // else {
+        //     console.log("You Reached Your Goal for "+Symbol+"==>"+profit);
+        // }
     } catch (error) {
         console.error('Error getting sendorder to MT5:', error.message);
         return error;
