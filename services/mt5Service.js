@@ -181,7 +181,7 @@ const GetQuote = async (id, Symbol) => {
         Symbol
     };
     try {
-        const data = axios.get(endpoint, { params });
+        const data = await axios.get(endpoint, { params });
         return data;
     } catch (error) {
         console.error('Error getting for symbol information to MT5:', error.message);
