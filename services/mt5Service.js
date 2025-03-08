@@ -144,8 +144,8 @@ const closeOrder = async (id, ticket) => {
 }
 
 const openOrder = async (id, Symbol, operation, Volume) => {
-    const quote = await GetQuote(id, Symbol);
-            console.log(quote.data);
+    const quote = await GetQuote(id, Symbol.data);
+            console.log(quote);
             return quote;
     // if (data != undefined || data != null) {
     //     const endpoint = `${MT5_API_URL}/OrderSend`;
