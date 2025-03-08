@@ -144,16 +144,16 @@ const closeOrder = async (id, ticket) => {
 }
 
 const openOrder = async (id, Symbol, operation, Volume) => {
-    const quote = await GetQuote(id, Symbol).data;
-            console.log(quote);
+    const quote = await GetQuote(id, Symbol);
+    console.log(quote.data);
     if (data != undefined || data != null) {
         const endpoint = `${MT5_API_URL}/OrderSend`;
-        let stoploss =0.0;
-        if(operation === 'Buy'){
-            stoploss = quote.bid - 600 ;
+        let stoploss = 0.0;
+        if (operation === 'Buy') {
+            stoploss = quote.data.bid - 600;
         }
-        if(operation === 'Sell'){
-            stoploss = quote.ask + 600 ;
+        if (operation === 'Sell') {
+            stoploss = quote.data.ask + 600;
         }
         const params = {
             id,
