@@ -1,13 +1,15 @@
 const axios = require('axios');
 const res = require('express/lib/response');
+const Quote = require("../services/Quote");
 const {
     zonedTimeToUtc,
     utcToZonedTime,
     // format,
     formatInTimeZone,
     getTimezoneOffset,
-  } = require('date-fns-tz');
-  const { addDays } = require('date-fns');
+} = require('date-fns-tz');
+const { addDays } = require('date-fns');
+const Quote = require('../services/Quote');
 const MT5_API_URL = 'https://mt5.mtapi.io';
 
 
@@ -46,16 +48,16 @@ const getAccount = async (id) => {
 
 const sendOrder = async (id, Symbol, operation, Volume) => {
 
-    
+
     const openOperdersendpoint = `${MT5_API_URL}/OpenOrders`;
 
     try {
         const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
         if (orders.data != null && orders.data.length > 0) {
             orders.data.forEach(async order => {
-    //console.log(order,order.Symbol);
-    if (order.symbol === Symbol && order.orderType != operation) {
-                   await closeOrder(id, order.ticket);
+                //console.log(order,order.Symbol);
+                if (order.symbol === Symbol && order.orderType != operation) {
+                    await closeOrder(id, order.ticket);
                 }
             });
         }
@@ -81,21 +83,21 @@ const getOrderHistory = async (id) => {
         new Date().getUTCMonth(),
         new Date().getUTCDate(),
         0, 0, 0
-      ));
-      
-      const endOfDayUTC = new Date(Date.UTC(
+    ));
+
+    const endOfDayUTC = new Date(Date.UTC(
         new Date().getUTCFullYear(),
         new Date().getUTCMonth(),
         new Date().getUTCDate(),
         23, 59, 59, 999
-      ));
-      
-      console.log('Start of the day (UTC):', startOfDayUTC.toISOString());
-      console.log('End of the day (UTC):', endOfDayUTC.toISOString());
+    ));
+
+    console.log('Start of the day (UTC):', startOfDayUTC.toISOString());
+    console.log('End of the day (UTC):', endOfDayUTC.toISOString());
     const params = {
         id,
-        from:startOfDayUTC.toISOString(),
-        to:endOfDayUTC.toISOString()
+        from: startOfDayUTC.toISOString(),
+        to: endOfDayUTC.toISOString()
     };
     try {
         const response = await axios.get(endpoint, { params });
@@ -105,31 +107,31 @@ const getOrderHistory = async (id) => {
         throw error.response ? error.response.data : error;
     }
 }
-const getProfit = async (id,Symbol)=>{
+const getProfit = async (id, Symbol) => {
     const orderHistory = JSON.parse(await getOrderHistory(id));
     if (Array.isArray(orderHistory.orders)) {
         // Proceed with iteration
-      } else {
+    } else {
         console.error('The orders property is not an array.');
-      }
-      //console.log(JSON.stringify(orderHistory));
+    }
+    //console.log(JSON.stringify(orderHistory));
     let profit = 0;
-        if(orderHistory.orders != undefined || orderHistory.orders.length > 0){
-            orderHistory.orders.forEach((x) => {
-                if(x.symbol === Symbol){
-                    profit += x.profit;
-                }
-            });
-        }
-        else {
-            profit = 0;
-        }
-        return profit;
+    if (orderHistory.orders != undefined || orderHistory.orders.length > 0) {
+        orderHistory.orders.forEach((x) => {
+            if (x.symbol === Symbol) {
+                profit += x.profit;
+            }
+        });
+    }
+    else {
+        profit = 0;
+    }
+    return profit;
 }
 const closeOrder = async (id, ticket) => {
 
     const endpoint = `${MT5_API_URL}/OrderClose`;
-    console.log(id,ticket);
+    console.log(id, ticket);
     const params = {
         id,
         ticket
@@ -144,29 +146,52 @@ const closeOrder = async (id, ticket) => {
 }
 
 const openOrder = async (id, Symbol, operation, Volume) => {
-
-    const endpoint = `${MT5_API_URL}/OrderSend`;
-    let stoploss = 5000;
-    const params = {
-        id,
-        Symbol,
-        operation,
-        Volume,
-        stoploss
-    };
-    try {
-        const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
-        //console.log(orders);
-        if (orders.data != null && orders.data.filter(x=>x.symbol === Symbol && x.orderType === operation).length == 0) {
-            const response = axios.get(endpoint, {params});
-            return response;
+    let quote = new Quote();
+    quote = GetQuote(id, Symbol);
+            console.log(quote);
+    if (data != undefined || data != null) {
+        const endpoint = `${MT5_API_URL}/OrderSend`;
+        let stoploss =0.0;
+        if(operation === 'Buy'){
+            stoploss = quote.bid - 600 ;
         }
-    } catch (error) {
-        console.error('Error getting close Order to MT5:', error.message);
-        return error;
+        if(operation === 'Sell'){
+            stoploss = quote.ask + 600 ;
+        }
+        const params = {
+            id,
+            Symbol,
+            operation,
+            Volume,
+            stoploss
+        };
+        try {
+            const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
+            if (orders.data != null && orders.data.filter(x => x.symbol === Symbol && x.orderType === operation).length == 0) {
+                const response = axios.get(endpoint, { params });
+                return response;
+            }
+        } catch (error) {
+            console.error('Error getting close Order to MT5:', error.message);
+            return error;
+        }
     }
 }
-
+const GetQuote = async (id, Symbol) => {
+    const endpoint = `${MT5_API_URL}/GetQuote`;
+    const params = {
+        id,
+        Symbol
+    };
+    try {
+        let Quote = new Quote();
+        Quote = axios.get(endpoint, { params });
+        return Quote;
+    } catch (error) {
+        console.error('Error getting for symbol information to MT5:', error.message);
+        return null;
+    }
+}
 module.exports = {
     getToken, getAccount, sendOrder, closeOrder
 };
