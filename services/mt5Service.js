@@ -144,7 +144,7 @@ const closeOrder = async (id, ticket) => {
 }
 
 const openOrder = async (id, Symbol, operation, Volume) => {
-    let quote = GetQuote(id, Symbol);
+    const quote = GetQuote(id, Symbol);
             console.log(quote);
     if (data != undefined || data != null) {
         const endpoint = `${MT5_API_URL}/OrderSend`;
@@ -181,7 +181,7 @@ const GetQuote = async (id, Symbol) => {
         Symbol
     };
     try {
-        let data = axios.get(endpoint, { params });
+        const data = axios.get(endpoint, { params });
         return data;
     } catch (error) {
         console.error('Error getting for symbol information to MT5:', error.message);
