@@ -181,7 +181,7 @@ const GetQuote = async (id, Symbol) => {
         Symbol
     };
     try {
-        const data = await axios.get(endpoint, { params });
+        const data = await axios.get(`https://mt5.mtapi.io/GetQuote?id=${id}&symbol=${Symbol}`);
         return data;
     } catch (error) {
         console.error('Error getting for symbol information to MT5:', error.message);
