@@ -144,36 +144,35 @@ const closeOrder = async (id, ticket) => {
 }
 
 const openOrder = async (id, Symbol, operation, Volume) => {
-    const quote = await GetQuote(id, Symbol.data);
+    const quote = await GetQuote(id, Symbol).data;
             console.log(quote);
-            return quote;
-    // if (data != undefined || data != null) {
-    //     const endpoint = `${MT5_API_URL}/OrderSend`;
-    //     let stoploss =0.0;
-    //     if(operation === 'Buy'){
-    //         stoploss = quote.bid - 600 ;
-    //     }
-    //     if(operation === 'Sell'){
-    //         stoploss = quote.ask + 600 ;
-    //     }
-    //     const params = {
-    //         id,
-    //         Symbol,
-    //         operation,
-    //         Volume,
-    //         stoploss
-    //     };
-    //     try {
-    //         const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
-    //         if (orders.data != null && orders.data.filter(x => x.symbol === Symbol && x.orderType === operation).length == 0) {
-    //             const response = axios.get(endpoint, { params });
-    //             return response;
-    //         }
-    //     } catch (error) {
-    //         console.error('Error getting close Order to MT5:', error.message);
-    //         return error;
-    //     }
-    // }
+    if (data != undefined || data != null) {
+        const endpoint = `${MT5_API_URL}/OrderSend`;
+        let stoploss =0.0;
+        if(operation === 'Buy'){
+            stoploss = quote.bid - 600 ;
+        }
+        if(operation === 'Sell'){
+            stoploss = quote.ask + 600 ;
+        }
+        const params = {
+            id,
+            Symbol,
+            operation,
+            Volume,
+            stoploss
+        };
+        try {
+            const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
+            if (orders.data != null && orders.data.filter(x => x.symbol === Symbol && x.orderType === operation).length == 0) {
+                const response = axios.get(endpoint, { params });
+                return response;
+            }
+        } catch (error) {
+            console.error('Error getting close Order to MT5:', error.message);
+            return error;
+        }
+    }
 }
 const GetQuote = async (id, Symbol) => {
     const endpoint = `${MT5_API_URL}/GetQuote`;
