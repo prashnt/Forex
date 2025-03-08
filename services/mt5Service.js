@@ -146,12 +146,13 @@ const closeOrder = async (id, ticket) => {
 const openOrder = async (id, Symbol, operation, Volume) => {
 
     const endpoint = `${MT5_API_URL}/OrderSend`;
-
+    let stoploss = 5000;
     const params = {
         id,
         Symbol,
         operation,
-        Volume
+        Volume,
+        stoploss
     };
     try {
         const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
