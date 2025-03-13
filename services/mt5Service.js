@@ -149,11 +149,14 @@ const openOrder = async (id, Symbol, operation, Volume) => {
     if (quote.data != undefined || quote.data != null) {
         const endpoint = `${MT5_API_URL}/OrderSend`;
         let stoploss = 0.0;
+        let takeprofit = 0.0;
         if (operation === 'Buy') {
             stoploss = quote.data.ask - 1600;
+            takeprofit = quote.data.ask + 2100;
         }
         if (operation === 'Sell') {
-            stoploss = quote.data.bid + 2100;
+            stoploss = quote.data.bid + 1600;
+            takeprofit = quote.data.bid - 2100;
         }
         const params = {
             id,
