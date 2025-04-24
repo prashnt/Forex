@@ -1,5 +1,22 @@
 const axios = require('axios');
+const axiosRetry = require('axios-retry');
 const res = require('express/lib/response');
+
+axiosRetry(axios, {
+    retries: 5, // number of retries
+    retryDelay: (retryCount) => {
+        console.log(`⏳ Retry attempt ${retryCount}`);
+        return retryCount * 1000; // delay in ms
+    },
+    retryCondition: (error) => {
+        // Retry on 503 or network error
+        return (
+            axiosRetry.isNetworkOrIdempotentRequestError(error) ||
+            error?.response?.status === 503
+        );
+    },
+});
+
 const {
     zonedTimeToUtc,
     utcToZonedTime,
