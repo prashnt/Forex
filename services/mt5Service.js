@@ -168,11 +168,11 @@ const openOrder = async (id, Symbol, operation, Volume) => {
         let stoploss = 0.0;
         let takeprofit = 0.0;
         if (operation === 'Buy') {
-            stoploss = Symbol === 'XAUUSDm' ? quote.data.ask - 7 : quote.data.ask - 1000;
+            stoploss = Symbol === 'XAUUSDm' ? quote.data.ask - 12 : quote.data.ask - 1000;
             takeprofit = quote.data.ask + 2100;
         }
         if (operation === 'Sell') {
-            stoploss = Symbol === 'XAUUSDm' ? quote.data.ask + 7 : quote.data.bid + 1000;
+            stoploss = Symbol === 'XAUUSDm' ? quote.data.ask + 12 : quote.data.bid + 1000;
             takeprofit = quote.data.bid - 2100;
         }
         const params = {
