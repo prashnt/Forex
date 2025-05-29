@@ -166,6 +166,8 @@ const openOrder = async (id, Symbol, operation, Volume) => {
     if (quote.data != undefined || quote.data != null) {
         const endpoint = `${MT5_API_URL}/OrderSend`;
         let stoploss = 0.0;
+            let placedType=Manually;
+            let expirationType=Specified;
         let takeprofit = 0.0;
         if (operation === 'Buy') {
             stoploss = Symbol === 'XAUUSDm' ? quote.data.ask - 12 : quote.data.ask - 1000;
@@ -179,7 +181,9 @@ const openOrder = async (id, Symbol, operation, Volume) => {
             id,
             Symbol,
             operation,
-            Volume
+            Volume,
+            placedType,
+            expirationType
         };
         try {
             const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
