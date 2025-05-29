@@ -162,7 +162,7 @@ const closeOrder = async (id, ticket) => {
 
 const openOrder = async (id, Symbol, operation, Volume) => {
     const quote = await GetQuote(id, Symbol);
-    console.log(quote.data);
+    //console.log(quote.data);
     if (quote.data != undefined || quote.data != null) {
         const endpoint = `${MT5_API_URL}/OrderSend`;
         let stoploss = 0.0;
