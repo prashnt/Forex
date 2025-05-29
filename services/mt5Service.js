@@ -166,8 +166,8 @@ const openOrder = async (id, Symbol, operation, Volume) => {
     if (quote.data != undefined || quote.data != null) {
         const endpoint = `${MT5_API_URL}/OrderSend`;
         let stoploss = 0.0;
-            let placedType=Manually;
-            let expirationType=Specified;
+            let placedType="Manually";
+            let expirationType="Specified";
         let takeprofit = 0.0;
         if (operation === 'Buy') {
             stoploss = Symbol === 'XAUUSDm' ? quote.data.ask - 12 : quote.data.ask - 1000;
