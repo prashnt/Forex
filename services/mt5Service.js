@@ -190,7 +190,7 @@ const openOrder = async (id, Symbol, operation, Volume) => {
             const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
             if (orders.data != null && orders.data.filter(x => x.symbol === Symbol && x.orderType === operation && x.closeLots==0).length == 0) {
                 const response = axios.get(endpoint, { params });
-                 console.log(response);
+                 console.log((await response).data);
                 return response;
             }
         } catch (error) {
