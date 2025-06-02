@@ -182,7 +182,6 @@ const openOrder = async (id, Symbol, operation, Volume) => {
             Symbol,
             operation,
             Volume,
-            takeprofit,
             placedType,
             expirationType
         };
