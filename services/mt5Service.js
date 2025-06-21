@@ -70,7 +70,7 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
         const orders = await axios.get(`https://mt5.mtapi.io/OpenedOrders?id=${id}&sort=OpenTime&ascending=true`);
         if (orders.data != null && orders.data.length > 0) {
             orders.data.forEach(async order => {
-                console.log(order,order.Symbol);
+                console.log(order.orderType,order.Symbol,"close order"+operation);
                 if (order.symbol === Symbol && order.orderType != operation) {
                     await closeOrder(id, order.ticket);
                 }
@@ -183,7 +183,6 @@ const openOrder = async (id, Symbol, operation, Volume) => {
             operation,
             Volume,
             placedType,
-            stoploss,
             expirationType
         };
         try {
