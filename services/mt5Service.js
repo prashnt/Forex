@@ -74,7 +74,7 @@ const sendOrder = async (id, Symbol, operation, Volume) => {
                 if (order.symbol === Symbol && order.orderType != operation) {
                     await closeOrder(id, order.ticket);
                 }
-            });
+            }); 
         }
         //let profit = await getProfit(id,Symbol);
         //if(profit < 30000){
